@@ -1,34 +1,27 @@
-/* Alap stílusok */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI';
     margin: 0;
     background: #f0f2f5;
-    color: #1c1e21;
 }
 
 /* Header */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    background: #fff;
     padding: 10px 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: #fff;
     position: sticky;
     top: 0;
-    z-index: 10;
 }
 
-.header .logo {
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.header .search-box input {
-    padding: 6px 10px;
-    width: 200px;
-    border: 1px solid #ccd0d5;
+.search-box input {
+    padding: 8px;
     border-radius: 20px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border: 1px solid #1877f2;
 }
 
 /* Layout */
@@ -42,105 +35,41 @@ body {
 /* Sidebar */
 .sidebar {
     width: 250px;
-    flex-shrink: 0;
-}
-
-.sidebar h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 16px;
+    position: sticky;
+    top: 70px;
 }
 
 .category {
-    padding: 8px 10px;
-    margin-bottom: 4px;
+    padding: 8px;
     cursor: pointer;
-    border-radius: 6px;
 }
 
 .category:hover {
-    background-color: #e4e6eb;
+    background: #eee;
 }
 
-/* Upload box */
-.upload-box, .auth-box {
-    margin-top: 20px;
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.05);
-}
-
-.upload-box h3, .auth-box h3 {
-    margin-top: 0;
-    font-size: 14px;
-}
-
-.upload-box input, .upload-box select,
-.auth-box input {
-    width: 100%;
-    padding: 6px;
-    margin-bottom: 8px;
-    border: 1px solid #ccd0d5;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.upload-box button, .auth-box button {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.upload-box button {
-    background-color: #1877f2;
+.category.active {
+    background: #1877f2;
     color: white;
 }
 
-.auth-box button {
-    margin-top: 4px;
-    background-color: #4caf50;
-    color: white;
-}
-
-.auth-buttons button {
-    width: 48%;
-    margin-right: 4%;
-    display: inline-block;
-}
-
-#logoutBtn {
-    background-color: #f44336 !important;
-    display: none;
-}
-
-/* Main grid */
-.main {
-    flex: 1;
-}
-
+/* Cards */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
 }
 
-/* Product card */
 .card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: white;
+    border-radius: 10px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.1s ease;
+    transition: 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .card img {
@@ -153,7 +82,29 @@ body {
     padding: 10px;
 }
 
-.card-content .price {
+.title {
     font-weight: bold;
-    margin-bottom: 4px;
+}
+
+.price {
+    color: #1877f2;
+    font-size: 16px;
+}
+
+.category-label {
+    font-size: 12px;
+    color: gray;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+        margin: 10px;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+    }
 }
