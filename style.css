@@ -1,193 +1,159 @@
-/* Alap body stílusok */
+/* Alap stílusok */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f6f8;
-  margin: 0;
-  color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f0f2f5;
+    color: #1c1e21;
 }
 
 /* Header */
 .header {
-  background-color: #1877f2; /* Facebook-kék */
-  color: white;
-  padding: 12px 24px;
-  font-size: 24px;
-  font-weight: 700;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgb(24 119 242 / 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-/* Search box */
-.search-box input {
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: none;
-  width: 200px;
-  transition: box-shadow 0.2s;
-}
-.search-box input:focus {
-  outline: none;
-  box-shadow: 0 0 8px #1877f2aa;
+.header .logo {
+    font-weight: bold;
+    font-size: 20px;
 }
 
-/* Layout: sidebar és main */
+.header .search-box input {
+    padding: 6px 10px;
+    width: 200px;
+    border: 1px solid #ccd0d5;
+    border-radius: 20px;
+}
+
+/* Layout */
 .layout {
-  display: flex;
-  max-width: 1200px;
-  margin: 20px auto;
-  gap: 20px;
-  padding: 0 12px;
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    gap: 20px;
 }
 
 /* Sidebar */
 .sidebar {
-  flex: 0 0 220px;
-  background: white;
-  padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
-  font-size: 14px;
-  color: #555;
+    width: 250px;
+    flex-shrink: 0;
 }
 
-/* Kategória elemek */
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
 .category {
-  cursor: pointer;
-  margin: 8px 0;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background-color 0.2s;
-  user-select: none;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    border-radius: 6px;
 }
+
 .category:hover {
-  background-color: #e6f0ff;
-  color: #1877f2;
-  font-weight: 600;
+    background-color: #e4e6eb;
 }
 
-/* Termék feltöltő doboz */
-.sidebar > div:nth-last-child(1) {
-  margin-top: 32px;
-  font-size: 15px;
-  color: #222;
+/* Upload box */
+.upload-box, .auth-box {
+    margin-top: 20px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
 }
 
-/* Űrlap inputok */
-.sidebar input {
-  width: 100%;
-  padding: 8px 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  transition: border-color 0.2s;
-}
-.sidebar input:focus {
-  border-color: #1877f2;
-  outline: none;
+.upload-box h3, .auth-box h3 {
+    margin-top: 0;
+    font-size: 14px;
 }
 
-/* Feltöltés gomb */
-.sidebar button {
-  width: 100%;
-  padding: 10px 0;
-  border: none;
-  background-color: #1877f2;
-  color: white;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.sidebar button:hover {
-  background-color: #145dbf;
+.upload-box input, .upload-box select,
+.auth-box input {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-/* Fő tartalom */
+.upload-box button, .auth-box button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.upload-box button {
+    background-color: #1877f2;
+    color: white;
+}
+
+.auth-box button {
+    margin-top: 4px;
+    background-color: #4caf50;
+    color: white;
+}
+
+.auth-buttons button {
+    width: 48%;
+    margin-right: 4%;
+    display: inline-block;
+}
+
+#logoutBtn {
+    background-color: #f44336 !important;
+    display: none;
+}
+
+/* Main grid */
 .main {
-  flex: 1;
+    flex: 1;
 }
 
-/* Grid konténer */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
 }
 
-/* Kártya */
+/* Product card */
 .card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.3s;
-  cursor: pointer;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.1s ease;
 }
+
 .card:hover {
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+    transform: translateY(-3px);
 }
 
-/* Kép */
 .card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
 }
 
-/* Kártya tartalom */
 .card-content {
-  padding: 10px 12px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    padding: 10px;
 }
 
-/* Ár */
-.price {
-  font-weight: 700;
-  color: #1877f2;
-  margin-bottom: 6px;
-  font-size: 15px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Termék név */
-.card-content > div:last-child {
-  font-size: 14px;
-  color: #444;
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Modal stílus (maradhat így, ha használod) */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgb(0 0 0 / 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.modal-content {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 3px 15px rgb(0 0 0 / 0.3);
+.card-content .price {
+    font-weight: bold;
+    margin-bottom: 4px;
 }
