@@ -4,19 +4,27 @@ body {
     background: #f0f2f5;
 }
 
-/* Header */
+/* HEADER */
 .header {
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
+    align-items: center;
+    padding: 12px 20px;
     background: #fff;
     position: sticky;
     top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .search-box input {
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 20px;
+    border: 1px solid #ccc;
 }
 
 .search-box input:focus {
@@ -24,7 +32,22 @@ body {
     border: 1px solid #1877f2;
 }
 
-/* Layout */
+/* LOGIN GOMB */
+.auth-top button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #1877f2;
+    color: white;
+    margin-left: 5px;
+}
+
+#logoutBtn {
+    background: #f44336;
+}
+
+/* LAYOUT */
 .layout {
     display: flex;
     max-width: 1200px;
@@ -32,7 +55,7 @@ body {
     gap: 20px;
 }
 
-/* Sidebar */
+/* SIDEBAR */
 .sidebar {
     width: 250px;
     position: sticky;
@@ -42,6 +65,7 @@ body {
 .category {
     padding: 8px;
     cursor: pointer;
+    border-radius: 6px;
 }
 
 .category:hover {
@@ -53,13 +77,50 @@ body {
     color: white;
 }
 
-/* Cards */
+/* FELTÖLTÉS */
+.upload-box {
+    margin-top: 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.upload-box input,
+.upload-box select {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 8px;
+}
+
+.upload-box button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #1877f2;
+    color: white;
+    cursor: pointer;
+}
+
+/* ÜZENET */
+#uploadMessage {
+    text-align: center;
+    padding: 10px;
+    color: #555;
+}
+
+#uploadForm {
+    display: none;
+}
+
+/* GRID */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
 }
 
+/* CARD */
 .card {
     background: white;
     border-radius: 10px;
@@ -96,7 +157,53 @@ body {
     color: gray;
 }
 
-/* Mobile */
+/* MODAL (LOGIN) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    width: 300px;
+    margin: 120px auto;
+    border-radius: 10px;
+    position: relative;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.modal-content button {
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #1877f2;
+    color: white;
+    cursor: pointer;
+}
+
+.close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
     .layout {
         flex-direction: column;
@@ -106,5 +213,14 @@ body {
     .sidebar {
         width: 100%;
         position: static;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box input {
+        width: 100%;
     }
 }
