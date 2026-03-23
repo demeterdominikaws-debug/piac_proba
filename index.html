@@ -18,10 +18,10 @@
 
     <div class="sidebar">
         <h3>Kategóriák</h3>
-        <div class="category" onclick="filterCategory('all')">Összes</div>
-        <div class="category" onclick="filterCategory('tech')">Elektronika</div>
-        <div class="category" onclick="filterCategory('fashion')">Ruházat</div>
-        <div class="category" onclick="filterCategory('other')">Egyéb</div>
+        <div class="category active" onclick="filterCategory('all', event)">Összes</div>
+        <div class="category" onclick="filterCategory('tech', event)">Elektronika</div>
+        <div class="category" onclick="filterCategory('fashion', event)">Ruházat</div>
+        <div class="category" onclick="filterCategory('other', event)">Egyéb</div>
 
         <!-- Termék feltöltés -->
         <div class="upload-box">
@@ -34,10 +34,14 @@
                 <option value="fashion">Ruházat</option>
                 <option value="other">Egyéb</option>
             </select>
-            <button onclick="addProduct()">Feltöltés</button>
+
+            <button id="uploadBtn" onclick="addProduct()">Feltöltés</button>
+            <div id="uploadWarning" style="display:none; color:red;">
+                Jelentkezz be a feltöltéshez!
+            </div>
         </div>
 
-        <!-- Bejelentkezés / Regisztráció -->
+        <!-- Auth -->
         <div class="auth-box">
             <h3>Bejelentkezés / Regisztráció</h3>
             <input type="email" id="email" placeholder="Email">
