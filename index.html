@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Marketplace Clone</title>
-
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
 <div class="header">
-    <div>Marketplace</div>
+    <div class="logo">Marketplace</div>
     <div class="search-box">
         <input type="text" id="search" placeholder="Keresés...">
     </div>
@@ -23,16 +21,32 @@
         <div class="category" onclick="filterCategory('all')">Összes</div>
         <div class="category" onclick="filterCategory('tech')">Elektronika</div>
         <div class="category" onclick="filterCategory('fashion')">Ruházat</div>
+        <div class="category" onclick="filterCategory('other')">Egyéb</div>
 
-        <!-- Termék feltöltő űrlap -->
-        <div style="margin-top: 30px; padding: 10px; background: #fff; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+        <!-- Termék feltöltés -->
+        <div class="upload-box">
             <h3>Termék feltöltése</h3>
-            <input id="name" placeholder="Termék neve" style="width: 100%; margin-bottom: 8px; padding: 6px;"><br>
-            <input id="price" placeholder="Ár" style="width: 100%; margin-bottom: 8px; padding: 6px;"><br>
-            <input id="img" placeholder="Kép URL" style="width: 100%; margin-bottom: 8px; padding: 6px;"><br>
-            <button onclick="addProduct()" style="width: 100%; padding: 8px; background-color: #1877f2; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Feltöltés
-            </button>
+            <input id="name" placeholder="Termék neve">
+            <input id="price" placeholder="Ár">
+            <input id="img" placeholder="Kép URL">
+            <select id="category">
+                <option value="tech">Elektronika</option>
+                <option value="fashion">Ruházat</option>
+                <option value="other">Egyéb</option>
+            </select>
+            <button onclick="addProduct()">Feltöltés</button>
+        </div>
+
+        <!-- Bejelentkezés / Regisztráció -->
+        <div class="auth-box">
+            <h3>Bejelentkezés / Regisztráció</h3>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Jelszó">
+            <div class="auth-buttons">
+                <button onclick="register()">Regisztráció</button>
+                <button onclick="login()">Bejelentkezés</button>
+            </div>
+            <button onclick="logout()" id="logoutBtn">Kijelentkezés</button>
         </div>
     </div>
 
@@ -40,14 +54,6 @@
         <div class="grid" id="grid"></div>
     </div>
 
-</div>
-
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle"></h3>
-        <p id="modalPrice"></p>
-        <button onclick="closeModal()">Bezárás</button>
-    </div>
 </div>
 
 <script type="module" src="script.js"></script>
