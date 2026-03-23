@@ -3,13 +3,7 @@ import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc } from "https
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBFF_l_nppAsMafX7nYu5ru6bPxGQsv73Y",
-  authDomain: "marketplacekopi1.firebaseapp.com",
-  projectId: "marketplacekopi1",
-  storageBucket: "marketplacekopi1.firebasestorage.app",
-  messagingSenderId: "662597167475",
-  appId: "1:662597167475:web:3204f26a497856c4b67d06",
-  measurementId: "G-R4D23WFJP0"
+  apiKey: "YOUR_KEY"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -18,141 +12,138 @@ const auth = getAuth();
 
 const grid = document.getElementById("grid");
 const fallbackImage = "https://via.placeholder.com/300x150?text=No+Image";
-let currentCategory = 'all';
 
-// Feltöltő űrlap mezők
-const uploadInputs = [
-  document.getElementById("name"),
-  document.getElementById("price"),
-  document.getElementById("img"),
-  document.getElementById("category"),
-  document.getElementById("uploadBtn")
-];
-const uploadWarning = document.getElementById("uploadWarning");
+let currentCategory = "all";
+let searchText = "";
 
-// Termékek betöltése
+// 🔍 KERESÉS
+document.getElementById("search").addEventListener("input", (e) => {
+  searchText = e.target.value.toLowerCase();
+  loadProducts();
+});
+
+// 📦 TERMÉKEK BETÖLTÉSE
 async function loadProducts() {
-  grid.innerHTML = "";
+  grid.innerHTML = "<div class='loading'>Betöltés...</div>";
+
   const querySnapshot = await getDocs(collection(db, "products"));
-  
-  querySnapshot.forEach(doc => {
-    const p = doc.data();
+  grid.innerHTML = "";
+
+  querySnapshot.forEach(docSnap => {
+    const p = docSnap.data();
     const isOwner = auth.currentUser && auth.currentUser.uid === p.uid;
 
-    if (currentCategory === 'all' || p.category === currentCategory) {
+    if (
+      (currentCategory === "all" || p.category === currentCategory) &&
+      p.name.toLowerCase().includes(searchText)
+    ) {
       grid.innerHTML += `
-        <div class="card" data-id="${doc.id}">
-          <img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='${fallbackImage}';">
+        <div class="card">
+          <img src="${p.img}" onerror="this.src='${fallbackImage}'">
           <div class="card-content">
-            <div class="price">${p.price}</div>
-            <div>${p.name}</div>
-            ${isOwner ? `<button onclick="deleteProduct('${doc.id}')">Törlés</button>` : ''}
+            <div class="title">${p.name}</div>
+            <div class="price">${p.price} Ft</div>
+            <div class="category-label">${p.category}</div>
+            ${isOwner ? `<button onclick="deleteProduct('${docSnap.id}')">Törlés</button>` : ""}
           </div>
         </div>
       `;
     }
   });
+
+  if (grid.innerHTML === "") {
+    grid.innerHTML = "<p>Nincs találat 😢</p>";
+  }
 }
 
-// Kategória szűrő
-window.filterCategory = function(category) {
+// 📂 KATEGÓRIA
+window.filterCategory = function(category, event) {
   currentCategory = category;
-  loadProducts();
-}
 
-// Új termék hozzáadása
+  document.querySelectorAll(".category").forEach(el => {
+    el.classList.remove("active");
+  });
+
+  event.target.classList.add("active");
+
+  loadProducts();
+};
+
+// ➕ TERMÉK HOZZÁADÁS
 window.addProduct = async function() {
   const user = auth.currentUser;
-  if (!user) {
-    alert("Be kell jelentkezned a feltöltéshez!");
-    return;
-  }
+  if (!user) return alert("Be kell jelentkezned!");
 
   const name = document.getElementById("name").value.trim();
   const price = document.getElementById("price").value.trim();
   const img = document.getElementById("img").value.trim();
   const category = document.getElementById("category").value;
 
-  if (!name || !price || !img || !category) {
-    alert("Kérlek, tölts ki minden mezőt!");
+  if (!name || !price || !img) {
+    alert("Tölts ki mindent!");
     return;
   }
 
-  try {
-    await addDoc(collection(db, "products"), {
-      name,
-      price,
-      img,
-      category,
-      uid: user.uid
-    });
-
-    // Űrlap törlése
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("img").value = "";
-    document.getElementById("category").value = "tech";
-
-    loadProducts();
-  } catch (error) {
-    alert("Hiba történt a feltöltés során: " + error.message);
+  if (isNaN(price)) {
+    alert("Az ár szám legyen!");
+    return;
   }
+
+  await addDoc(collection(db, "products"), {
+    name,
+    price: Number(price),
+    img,
+    category,
+    uid: user.uid
+  });
+
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("img").value = "";
+
+  loadProducts();
 };
 
-// Termék törlése
+// ❌ TÖRLÉS
 window.deleteProduct = async function(id) {
-  if (confirm("Biztosan törlöd a terméket?")) {
-    try {
-      await deleteDoc(doc(db, "products", id));
-      loadProducts();
-    } catch (error) {
-      alert("Hiba történt a törlés során: " + error.message);
-    }
+  if (confirm("Törlöd?")) {
+    await deleteDoc(doc(db, "products", id));
+    loadProducts();
   }
 };
 
-// Firebase Authentication
+// 🔐 AUTH
 window.register = async function() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    alert("Sikeres regisztráció!");
-  } catch (error) {
-    alert("Hiba a regisztráció során: " + error.message);
-  }
-}
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  await createUserWithEmailAndPassword(auth, email, password);
+  alert("Sikeres regisztráció!");
+};
 
 window.login = async function() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    alert("Sikeres bejelentkezés!");
-  } catch (error) {
-    alert("Hiba a bejelentkezés során: " + error.message);
-  }
-}
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  await signInWithEmailAndPassword(auth, email, password);
+};
 
 window.logout = async function() {
   await signOut(auth);
-  alert("Kijelentkeztél.");
-}
+};
 
-// Bejelentkezés állapot figyelése
+// 👤 AUTH FIGYELÉS
 onAuthStateChanged(auth, user => {
+  const warning = document.getElementById("uploadWarning");
+  const btn = document.getElementById("logoutBtn");
+
   if (user) {
-    uploadInputs.forEach(el => el.disabled = false);
-    uploadWarning.style.display = "none";
-    document.getElementById("logoutBtn").style.display = "inline-block";
+    warning.style.display = "none";
+    btn.style.display = "block";
   } else {
-    uploadInputs.forEach(el => el.disabled = true);
-    uploadWarning.style.display = "block";
-    document.getElementById("logoutBtn").style.display = "none";
+    warning.style.display = "block";
+    btn.style.display = "none";
   }
 
-  loadProducts(); // Frissítés (törlés gomb, jogosultságok miatt)
+  loadProducts();
 });
 
-// Oldal betöltésekor termékek betöltése
 loadProducts();
