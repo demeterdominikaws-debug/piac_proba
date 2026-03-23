@@ -9,8 +9,15 @@
 
 <div class="header">
     <div class="logo">Marketplace</div>
+
     <div class="search-box">
         <input type="text" id="search" placeholder="Keresés...">
+    </div>
+
+    <!-- LOGIN / LOGOUT -->
+    <div class="auth-top">
+        <button onclick="openLogin()" id="loginBtn">Bejelentkezés</button>
+        <button onclick="logout()" id="logoutBtn" style="display:none;">Kijelentkezés</button>
     </div>
 </div>
 
@@ -18,39 +25,35 @@
 
     <div class="sidebar">
         <h3>Kategóriák</h3>
+
         <div class="category active" onclick="filterCategory('all', event)">Összes</div>
         <div class="category" onclick="filterCategory('tech', event)">Elektronika</div>
         <div class="category" onclick="filterCategory('fashion', event)">Ruházat</div>
         <div class="category" onclick="filterCategory('other', event)">Egyéb</div>
 
-        <!-- Termék feltöltés -->
-        <div class="upload-box">
+        <!-- TERMÉK FELTÖLTÉS -->
+        <div class="upload-box" id="uploadBox">
             <h3>Termék feltöltése</h3>
-            <input id="name" placeholder="Termék neve">
-            <input id="price" placeholder="Ár">
-            <input id="img" placeholder="Kép URL">
-            <select id="category">
-                <option value="tech">Elektronika</option>
-                <option value="fashion">Ruházat</option>
-                <option value="other">Egyéb</option>
-            </select>
 
-            <button id="uploadBtn" onclick="addProduct()">Feltöltés</button>
-            <div id="uploadWarning" style="display:none; color:red;">
-                Jelentkezz be a feltöltéshez!
+            <!-- ÜZENET (ha nincs login) -->
+            <div id="uploadMessage">
+                Jelentkezz be a hirdetés feladásához 🔒
             </div>
-        </div>
 
-        <!-- Auth -->
-        <div class="auth-box">
-            <h3>Bejelentkezés / Regisztráció</h3>
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Jelszó">
-            <div class="auth-buttons">
-                <button onclick="register()">Regisztráció</button>
-                <button onclick="login()">Bejelentkezés</button>
+            <!-- FORM (csak login után látszik) -->
+            <div id="uploadForm">
+                <input id="name" placeholder="Termék neve">
+                <input id="price" placeholder="Ár">
+                <input id="img" placeholder="Kép URL">
+
+                <select id="category">
+                    <option value="tech">Elektronika</option>
+                    <option value="fashion">Ruházat</option>
+                    <option value="other">Egyéb</option>
+                </select>
+
+                <button onclick="addProduct()">Feltöltés</button>
             </div>
-            <button onclick="logout()" id="logoutBtn">Kijelentkezés</button>
         </div>
     </div>
 
@@ -58,6 +61,20 @@
         <div class="grid" id="grid"></div>
     </div>
 
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeLogin()">×</span>
+    <h2>Bejelentkezés</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Jelszó">
+
+    <button onclick="login()">Bejelentkezés</button>
+    <button onclick="register()">Regisztráció</button>
+  </div>
 </div>
 
 <script type="module" src="script.js"></script>
