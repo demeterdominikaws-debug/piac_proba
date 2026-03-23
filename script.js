@@ -3,7 +3,12 @@ import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc } from "https
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_KEY"
+  apiKey: "AIzaSyBFF_l_nppAsMafX7nYu5ru6bPxGQsv73Y",
+  authDomain: "marketplacekopi1.firebaseapp.com",
+  projectId: "marketplacekopi1",
+  storageBucket: "marketplacekopi1.firebasestorage.app",
+  messagingSenderId: "662597167475",
+  appId: "1:662597167475:web:c88b042553761d6db67d06"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -112,35 +117,63 @@ window.deleteProduct = async function(id) {
   }
 };
 
-// 🔐 AUTH
+// 🔓 MODAL KEZELÉS
+window.openLogin = function() {
+  document.getElementById("loginModal").style.display = "block";
+};
+
+window.closeLogin = function() {
+  document.getElementById("loginModal").style.display = "none";
+};
+
+// 🔐 AUTH (JAVÍTVA)
 window.register = async function() {
-  const email = emailInput.value;
-  const password = passwordInput.value;
-  await createUserWithEmailAndPassword(auth, email, password);
-  alert("Sikeres regisztráció!");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("Sikeres regisztráció!");
+    closeLogin();
+  } catch (error) {
+    alert(error.message);
+  }
 };
 
 window.login = async function() {
-  const email = emailInput.value;
-  const password = passwordInput.value;
-  await signInWithEmailAndPassword(auth, email, password);
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("Sikeres bejelentkezés!");
+    closeLogin();
+  } catch (error) {
+    alert(error.message);
+  }
 };
 
 window.logout = async function() {
   await signOut(auth);
 };
 
-// 👤 AUTH FIGYELÉS
+// 👤 AUTH FIGYELÉS (EZ A KULCS!)
 onAuthStateChanged(auth, user => {
-  const warning = document.getElementById("uploadWarning");
-  const btn = document.getElementById("logoutBtn");
+  const uploadForm = document.getElementById("uploadForm");
+  const uploadMessage = document.getElementById("uploadMessage");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
 
   if (user) {
-    warning.style.display = "none";
-    btn.style.display = "block";
+    uploadForm.style.display = "block";
+    uploadMessage.style.display = "none";
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
   } else {
-    warning.style.display = "block";
-    btn.style.display = "none";
+    uploadForm.style.display = "none";
+    uploadMessage.style.display = "block";
+    loginBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
   }
 
   loadProducts();
