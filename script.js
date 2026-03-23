@@ -18,13 +18,21 @@ const auth = getAuth();
 
 const grid = document.getElementById("grid");
 const fallbackImage = "https://via.placeholder.com/300x150?text=No+Image";
+let currentCategory = 'all';
 
-let currentCategory = 'all';  // Kategória szűrő alapértelmezetten 'all'
+// Feltöltő űrlap mezők
+const uploadInputs = [
+  document.getElementById("name"),
+  document.getElementById("price"),
+  document.getElementById("img"),
+  document.getElementById("category"),
+  document.getElementById("uploadBtn")
+];
+const uploadWarning = document.getElementById("uploadWarning");
 
-// Termékek betöltése kategória szerint, és jogosultság alapú törlés gomb megjelenítése
+// Termékek betöltése
 async function loadProducts() {
   grid.innerHTML = "";
-
   const querySnapshot = await getDocs(collection(db, "products"));
   
   querySnapshot.forEach(doc => {
@@ -52,7 +60,7 @@ window.filterCategory = function(category) {
   loadProducts();
 }
 
-// Új termék hozzáadása, csak bejelentkezett felhasználónak
+// Új termék hozzáadása
 window.addProduct = async function() {
   const user = auth.currentUser;
   if (!user) {
@@ -79,7 +87,7 @@ window.addProduct = async function() {
       uid: user.uid
     });
 
-    // Űrlap törlése feltöltés után
+    // Űrlap törlése
     document.getElementById("name").value = "";
     document.getElementById("price").value = "";
     document.getElementById("img").value = "";
@@ -91,7 +99,7 @@ window.addProduct = async function() {
   }
 };
 
-// Termék törlése a jogosult felhasználó által
+// Termék törlése
 window.deleteProduct = async function(id) {
   if (confirm("Biztosan törlöd a terméket?")) {
     try {
@@ -103,7 +111,7 @@ window.deleteProduct = async function(id) {
   }
 };
 
-// Firebase Authentication - regisztráció, bejelentkezés, kijelentkezés
+// Firebase Authentication
 window.register = async function() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -131,15 +139,19 @@ window.logout = async function() {
   alert("Kijelentkeztél.");
 }
 
-// Bejelentkezés állapot figyelése (Logout gomb mutatása/elrejtése)
+// Bejelentkezés állapot figyelése
 onAuthStateChanged(auth, user => {
   if (user) {
+    uploadInputs.forEach(el => el.disabled = false);
+    uploadWarning.style.display = "none";
     document.getElementById("logoutBtn").style.display = "inline-block";
   } else {
+    uploadInputs.forEach(el => el.disabled = true);
+    uploadWarning.style.display = "block";
     document.getElementById("logoutBtn").style.display = "none";
   }
-  
-  loadProducts();  // Frissítsük a terméklistát bejelentkezési állapot változáskor (törlés gomb miatt)
+
+  loadProducts(); // Frissítés (törlés gomb, jogosultságok miatt)
 });
 
 // Oldal betöltésekor termékek betöltése
